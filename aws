@@ -1,0 +1,1 @@
+aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='Purpose'&&Value=='general-purpose']].{StackName:StackName}" --output text
