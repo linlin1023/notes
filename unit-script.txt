@@ -1,2 +1,0 @@
-get the database dump file in an array and loop through it, as they already rename in batch to
-meet the convention that we have for dump files
