@@ -1,0 +1,86 @@
+automatically renaming a collection of files
+ -- we  could get dataset that user provided rename them into the filenames that suit out import command
+ -- we could get license file and replace this licence in the site/conf folder
+ Orchestrating a suite of tools for cracking a password database.
+ Simplifying configuration and reconfiguration of software.
+
+
+create a bash script you have to 
+1-. #!/bin/bash
+2-. chmod u+x scriptname
+
+'#!' indicate the path to interpreter
+then it will run /bin/bash on the file itself
+
+1-. Variable/Arrays
+foo=3  # sets foo to 3
+But, be sure to avoid using spaces:
+foo = 2 # error: invokes command `foo` with arguments `=` and `3`
+
+If, you insist on using spaces, you can dip into the expression sub-language that exits inside (())
+(( foo = 3 )) #  sets foo to 3
+
+To reference the value of a variable, use a dollar sign $
+echo $foo ; # prints the value of foo to stdout
+
+To delete a variable 
+foo=42
+echo $foo
+unset foo
+echo $foo #print nothing
+
+To assign on variable to another
+foo=$bar
+
+To assign a value which contains space, be sure to quote it:
+#wrong
+foo=x y z    # sets foo to x; will try to execute y on z
+foo='x y z'  # sets foo to "x y z"
+
+Wrap a reference to a variable is braces
+echo ${foo} # prints $foo
+
+There is no need to declare a  variable as an array: every variable is an array
+foo[0]="one"
+foo[1]="two"
+foo[2]="three"
+
+echo ${foo[1]}
+echo $foo  ## reference to first index by default here is "one"
+
+You can also use parentheses to create an array
+foo=("a a a", "b b b", "c c c")
+echo ${foo[2]} # print c c c 
+
+arr=(a b c)
+echo $arr #prints a
+echo ${arr[@]}   #prints a b c
+echo ${arr[*]}   #prints a b c 
+
+Copy an array, use the special subscript @ or *, surround that with quotes, and then surround that with parentheses;
+arr=(a b c)
+bar=("${arr[@]}") 
+echo ${bar[1]}  #print b
+
+
+DO not try to copy with just the variable:
+foo=(a b c)
+bar=$foo
+echo ${bar[1]}  #print nothing
+
+
+And, do not forget the quotes, or else arrays with space-containing elements will be screwed up
+foo=("a 1" "b 2" "c 3")
+bar=(${foo[@]})
+baz=("${foo[@]}")
+echo ${bar[1]}  # oops, print "1"
+echo ${baz[1]} # "b 2"
+
+
+2-. stdout  stdin stderr
+
+
+
+
+
+
