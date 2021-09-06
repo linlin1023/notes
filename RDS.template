@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Copyright 2018 Amazon.com, Inc. or its affiliates.
+Parameters:
+
+  DBSubnetGroupName:
+    Type: String
+    AllowedValues:
+      - devdbsubnet
+      - stagedbsubnet
+      - proddbsubnet
+    Description: RDS DB Subnet Group
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Choose Security Group
+  ApplicationName:
+    Description: ''
+    Type: String
+    Default: RDS
+  MySQLPassword:
+    Description: Password of RDS user must be more then 8 characters
+    Type: String
+    MinLength: '8'
+    MaxLength: '64'
+    NoEcho: 'true'
+Outputs: {}
+Resources:
+  MySQLDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref 'ApplicationName'
+      Engine: MySQL
+      DBName: !Ref 'ApplicationName'
+      MasterUsername: dbuser
+      MasterUserPassword: !Ref 'MySQLPassword'
+      DBInstanceClass: db.t2.small
+      AllocatedStorage: 5
+      DBSubnetGroupName: !Ref 'DBSubnetGroupName'
+      VPCSecurityGroups:
+        - !Ref 'DBSecurityGroup'

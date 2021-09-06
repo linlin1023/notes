@@ -47,6 +47,7 @@ two kinds of integration
     * No change in SAGE CSV file, for receipt modification, the receipt files will contain incremental changes
 * SAP integration   complete-reversal of the transaction followed by the new quantity, AP configuration  (XML)
     * Given the AP dir is populated, the XML file will be created
+    * the AP receipt integration mode has only one choice R
     * XML file will contain below
       * Receipt:
         * Action Code  : Add or Change
@@ -74,6 +75,14 @@ two kinds of integration
         * Received width
         * Receipt line comments
         * Default manual ship to address
+
+
+
+
+to configure the parameters for dir
+./configure.sh
+19
+
 
 
 

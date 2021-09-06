@@ -1,0 +1,370 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'Copyright 2018 Amazon.com, Inc. or its affiliates.'
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: Region Configuration
+        Parameters:
+          - RegionAZ1Name
+          - RegionAZ2Name
+      - Label:
+          default: VPC Configuration
+        Parameters:
+          - VPCCIDR
+      - Label:
+          default: Public Subnet Configuration
+        Parameters:
+          - Subnet1PublicCIDR
+          - Subnet2PublicCIDR
+      - Label:
+          default: Private Subnet Configuration
+        Parameters:
+          - Subnet1PrivateCIDR
+          - Subnet2PrivateCIDR
+Parameters:
+  RegionAZ1Name:
+    Description: Availability Zone 1 Name in Region
+    Type: 'AWS::EC2::AvailabilityZone::Name'
+  RegionAZ2Name:
+    Description: Availability Zone 2 Name in Region
+    Type: 'AWS::EC2::AvailabilityZone::Name'
+  VPCCIDR:
+    Description: CIDR block for the VPC
+    Type: String
+    Default: 10.3.0.0/16
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+  Subnet1PublicCIDR:
+    Description: CIDR block for the public subnet in availability zone
+    Type: String
+    Default: 10.3.32.0/27
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+  Subnet2PublicCIDR:
+    Description: CIDR block for the public subnet in availability zone
+    Type: String
+    Default: 10.3.64.0/27
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+  Subnet1PrivateCIDR:
+    Description: CIDR block for the private subnet in availability zone
+    Type: String
+    Default: 10.3.96.0/27
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+  Subnet2PrivateCIDR:
+    Description: CIDR block for the private subnet in availability zone
+    Type: String
+    Default: 10.3.128.0/27
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+Resources:
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: !Sub 'Dev VPC-${VPCCIDR}'
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref VPCCIDR
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  VPCGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  Subnet1Public:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Ref RegionAZ1Name
+      CidrBlock: !Ref Subnet1PublicCIDR
+      MapPublicIpOnLaunch: true
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Pub Sub 1
+        - Key: Reach
+          Value: public
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  Subnet2Public:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Ref RegionAZ2Name
+      CidrBlock: !Ref Subnet2PublicCIDR
+      MapPublicIpOnLaunch: true
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Pub Sub 2
+        - Key: Reach
+          Value: public
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  Subnet1Private:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Ref RegionAZ1Name
+      CidrBlock: !Ref Subnet1PrivateCIDR
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Priv Sub 1
+        - Key: Reach
+          Value: private
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  Subnet2Private:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Ref RegionAZ2Name
+      CidrBlock: !Ref Subnet2PrivateCIDR
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Priv Sub 2
+        - Key: Reach
+          Value: private
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  RouteTableAPublic:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Pub Sub 1
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  RouteTableBPublic:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Pub Sub 2
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  RouteTableAPrivate:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Priv Sub 1
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  RouteTableBPrivate:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Dev Priv Sub 2
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  RouteTableAssociationAPublic:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref Subnet1Public
+      RouteTableId: !Ref RouteTableAPublic
+  RouteTableAssociationBPublic:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref Subnet2Public
+      RouteTableId: !Ref RouteTableBPublic
+  RouteTableAssociationAPrivate:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref Subnet1Private
+      RouteTableId: !Ref RouteTableAPrivate
+  RouteTableAssociationBPrivate:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref Subnet2Private
+      RouteTableId: !Ref RouteTableBPrivate
+  RouteTablePublicAInternetRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTableAPublic
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  RouteTablePublicBInternetRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTableBPublic
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  NetworkAclPublic:
+    Type: 'AWS::EC2::NetworkAcl'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Public - sc-vpc-ra
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  NetworkAclPrivate:
+    Type: 'AWS::EC2::NetworkAcl'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Private - sc-vpc-ra
+        - Key: Description
+          Value: Service-Catalog-VPC-Reference-Architecture
+  SubnetNetworkAclAssociationAPublic:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref Subnet1Public
+      NetworkAclId: !Ref NetworkAclPublic
+  SubnetNetworkAclAssociationBPublic:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref Subnet2Public
+      NetworkAclId: !Ref NetworkAclPublic
+  SubnetNetworkAclAssociationAPrivate:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref Subnet1Private
+      NetworkAclId: !Ref NetworkAclPrivate
+  SubnetNetworkAclAssociationBPrivate:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref Subnet2Private
+      NetworkAclId: !Ref NetworkAclPrivate
+  NetworkAclEntryInPublicAllowAll:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublic
+      RuleNumber: 99
+      Protocol: -1
+      RuleAction: allow
+      Egress: false
+      CidrBlock: 0.0.0.0/0
+  NetworkAclEntryOutPublicAllowAll:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPublic
+      RuleNumber: 99
+      Protocol: -1
+      RuleAction: allow
+      Egress: true
+      CidrBlock: 0.0.0.0/0
+  NetworkAclEntryInPrivateAllowVPC:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPrivate
+      RuleNumber: 99
+      Protocol: -1
+      RuleAction: allow
+      Egress: false
+      CidrBlock: 0.0.0.0/0
+  NetworkAclEntryOutPrivateAllowVPC:
+    Type: 'AWS::EC2::NetworkAclEntry'
+    Properties:
+      NetworkAclId: !Ref NetworkAclPrivate
+      RuleNumber: 99
+      Protocol: -1
+      RuleAction: allow
+      Egress: true
+      CidrBlock: 0.0.0.0/0
+  DevmyDBSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: "description"
+      DBSubnetGroupName: "DevDBSubnet"
+      SubnetIds:
+        - !Ref Subnet1Private
+        - !Ref Subnet2Private
+      Tags:
+        -
+          Key: "Name"
+          Value: "Dev"
+
+  DevRDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: DevRDS-SG
+      VpcId: !Ref VPC
+      GroupDescription: Enable MySql access via user defined port
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306
+
+  DevLinuxSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: DevLinux-SG
+      VpcId: !Ref VPC
+      GroupDescription: Enable HTTP access via user defined port
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 80
+        IpProtocol: tcp
+        ToPort: 80
+
+Outputs:
+  TemplateID:
+    Value: service-catalog-reference-architectures/sc-vpc-ra
+  StackName:
+    Value: !Sub '${AWS::StackName}'
+  AWSRegionName:
+    Value: !Ref 'AWS::Region'
+  RegionAZ1Name:
+    Value: !Ref RegionAZ1Name
+  RegionAZ2Name:
+    Value: !Ref RegionAZ2Name
+  VPCCIDR:
+    Value: VCPCIDR
+  Subnet1PublicCIDR:
+    Value: !Ref Subnet1PublicCIDR
+  Subnet2PublicCIDR:
+    Value: !Ref Subnet2PublicCIDR
+  Subnet1PrivateCIDR:
+    Value: !Ref Subnet1PrivateCIDR
+  Subnet2PrivateCIDR:
+    Value: !Ref Subnet1PrivateCIDR
+  InternetGatewayID:
+    Value: !Ref InternetGateway
+  RouteTableAPublic:
+    Value: !Ref RouteTableAPublic
+  RouteTableBPublic:
+    Value: !Ref RouteTableBPublic
+  RouteTableAPrivate:
+    Value: !Ref RouteTableAPrivate
+  RouteTableBPrivate:
+    Value: !Ref RouteTableBPrivate
+  NetworkAclPublic:
+    Value: !Ref NetworkAclPublic
+  NetworkAclPrivate:
+    Value: !Ref NetworkAclPrivate
+  DevLinuxSecurityGroup:
+    Value: !Ref DevLinuxSecurityGroup
+  DevRDSSecurityGroup:
+    Value: !Ref DevRDSSecurityGroup
+  Subnet1Public:
+    Value: !Ref Subnet1Public
+  Subnet2Public:
+    Value: !Ref Subnet2Public

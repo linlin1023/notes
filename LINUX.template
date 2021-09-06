@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Copyright 2018 Amazon.com, Inc. or its affiliates.
+
+Parameters:
+   Subnet:
+      Type: AWS::EC2::Subnet::Id
+      Description: Service Catalog Linux Product
+      ConstraintDescription: Choose Subnet
+
+   SecurityGroup:
+      Description: Security Group used to limit the Source IP
+      Type: AWS::EC2::SecurityGroup::Id
+      ConstraintDescription: Choose Security Group
+      
+   InstanceType:
+      Type: String
+      Default: t2.small
+      AllowedValues:
+         - t2.micro
+         - t2.small
+      Description: Choose Instance Type t2.micro, t2.small
+   
+   ApplicationName:
+      Description: ""
+      Type: String
+      Default: LinuxInstance
+
+   AWSAmiId:
+      Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+      Default: "/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2"
+
+Resources:
+   SingleNodeInstance:
+      Type: AWS::EC2::Instance
+      Properties:
+         SecurityGroupIds:
+            - !Ref "SecurityGroup"
+         ImageId: !Ref AWSAmiId
+         Tags:
+            - Key: Name
+              Value: !Ref "ApplicationName"
+         SubnetId: !Ref "Subnet"
+         InstanceType: !Ref "InstanceType"
