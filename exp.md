@@ -12,6 +12,15 @@ experience in AWS,
 
 
 
+how important is the could and cloud computing.
+design, deploy, and manage applications in cloud computing.
+3-  12 certifications that cover both foundational and specialty cloud computing topics
+
+cloud projects
+
+
+ public cloud, cloud computing has moved from a nice-to-have to a core competency in the enterprise
+
 
 # AWS
 in Kiwiplan we use AWS to create AMIs which are those machine images that contain different licences and data base setup, to help developers to easily setup customer software environment and to invetigate the issue in production evironment
@@ -117,6 +126,7 @@ region specific
 1- code
 2- console
 3- AWS cli
+4- node js, serverless deploy -v, sls deploy -v, sls deploy -f functionname
 
 
 ### 13. IAM  idendity Access Management
@@ -171,6 +181,28 @@ every day task, I have to do one and learn some thing that really improve my ski
 ### 4. checkout master degree
 ### 5. running or excercise
 ### 6. algorithm
+
+
+
+
+
+________________
+# Nodejs
+
+1. server
+2. js core
+3. os / process / fs / net, 
+4. no browser object which react vue angular doing
+   
+API from offical web
+https://nodejs.org/dist/latest-v10.x/docs/api
+
+
+run/debug/modulize => build the thing you want
+
+
+
+
 
 
 
