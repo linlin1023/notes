@@ -44,6 +44,10 @@ and movement of robot. it used hundrends EC2 points, and SQS merged the resource
 >3. [Practise and free try](https://run.qwiklabs.com/)
 
 
+>cd src/test/measure/units/
+
+Nova-150,  [merge request](https://nzgit.kiwiplan.co.nz/kiwiplan/libraries/npm/kp-measure-web/-/merge_requests/8)
+
 >region ->  available zone (faul tolerant)  --> sites universal deploy
 #### how to access AWS, 
 >   1. RESTfull API interface -infrastructure and code, 0101001 the mathine always know
@@ -187,7 +191,7 @@ every day task, I have to do one and learn some thing that really improve my ski
 
 
 ________________
-# Nodejs
+# Nodejs -- study note
 
 1. server
 2. js core
@@ -199,6 +203,82 @@ https://nodejs.org/dist/latest-v10.x/docs/api
 
 
 run/debug/modulize => build the thing you want
+
+## diference between node.js and browser
+
+in browser, most of the time waht you are doing is interacting with the DOM, or other Web Platform APIs like Cookies, Those do not exist in Node.js, of cource, you do not have document and window and all the other objects that are provided by the browser.
+
+
+in the browser, we do not have alll the nice APIs that Node.js provides through its modules, liek the filesystem access functionality
+
+in node.js you control the environment of your application running.
+
+Node.js users the CommonJS module system, while in the browser we are starting to see the ES Modules standard being implemented, in practice, this means that for the time being you use require() in Node.js, and import int he browser
+
+## Debug node.js
+first step you need to enable inspector,  --inspect  switch, a Node.js process listens for a debuging client. By default, it will listen at host and port 127.0.0.1:9229. Each process is also assigned a unique UUID.
+
+Inspector clients must know and specify host address,port and UUID to connect. A full URL will look something like ws://127.0.0.1:9229/0f2c936f-b1cd-4ac9-aab3-f63b0f22d55e
+
+Node.js will also start listening for debugging messages if it receiveds a SIGUSR1 signal,
+
+exposing the debug port pulicly is unsafe
+If the debugger is bound to a public IP addresss or to 0.0.0.0 any clients that can reach your IP address will be able to connect to the debugger without any restriction and willl be able to run arbitraty code.
+
+by default node --inspect binds to 127.0.0.1. 
+
+
+REPL = read evaluate print loop
+
+tab key to auto complete
+
+THe REPL will print alll the properties and methods you can access on that class.
+
+
+you can inspect the globals you have access to by typing global. and pressing tab
+
+.help in REPL
+
+
+
+---------------------------
+# Javascript
+
+1. Lexical Structure
+2. Expressions
+3. Types
+4. Classes
+5. Variables
+6. Functions
+7. this
+8. Arrow Functions
+9. Loops
+10. Scopes
+11. Arrays
+12. Template Literals
+13. Semicolons
+14. Strict Mode
+15. ECMAScript 6, 2016, 2017
+
+javascript is synchronize by default and is single threaded.
+javascript code can not create new threads and run in parallel
+
+more recently, Node.js introduced a non-blocking I/O env, to extend this concept to file access network calls and so on.
+
+A callback is a simple function that is passed as a value to another function, and will only be executed when the event happens, we can do this because JS has first-class functions, which can be assgined to variables and passed around to other functions (called higher-order function)
+
+
+
+
+-------------------------
+# Algorithm
+
+
+------------------------------
+# repetable success and add-up progress (fast and beautiful is not the thing I should look at)
+
+1. always think about what is the correct way even though it sometimes is slow;
+2. 
 
 
 

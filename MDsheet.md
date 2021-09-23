@@ -70,6 +70,16 @@ ___
     npm start
 ```
 
+```bash
+cd src/test/measure/units/
+npm test --watch
+```
+
+
+
+
+
+
 ```javascript
     function add(num1, num2){
         return num1 + num2
@@ -80,6 +90,7 @@ ___
     def add(num1, num2):
         return num1 + num2
 ```
+
 
 
 ~~~
