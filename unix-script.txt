@@ -1,4 +1,0 @@
-get the database dump file in an array and loop through it, as they already rename in batch to
-meet the convention that we have for dump files
-
-curl --request GET --url https://1r5mt9wa63.execute-api.us-east-1.amazonaws.com/dev/hello

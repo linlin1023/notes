@@ -1,0 +1,23 @@
+curl -X GET "/api/health" -H "accept: */*"
+
+curl -X GET "/api/health" -H "accept: */*"
+
+curl -X POST "/api/shutdown" -H "accept: */*"
+
+curl -X GET "/api/links" -H "accept: */*"
+
+curl -X GET "/api/link/{link-id}" -H "accept: */*"
+
+curl -X POST "/api/link/kiwiplan_conveyor_link/start" -H "accept: */*"
+
+curl -X POST "/api/link/{link-id}/stop" -H "accept: */*"
+
+curl -X POST "/api/pcs/v2/machines/{machineId}/lineup" -H "accept: */*" -H "Content-Type: application/json" -d "{JSON Payload}"
+
+curl -X POST "/api/pcs/v3/machines/101/lineup" -H "accept: */*" -H "Content-Type: application/json" -d "{JSON Payload}"
+
+curl -X GET "/api/pcs/conveyor/v3/orders?machineId={machine-id}" -H "accept: */*"
+
+curl -X GET "http://localhost:3000/api/pcs/conveyor/v3/orders?machineId=112" -H "accept: */*"
+
+
