@@ -1,2 +1,20 @@
-# Doc
-achievement
+1.Achiever
+2.Consistency
+3.Empathy
+4.Restorative
+5.Positivity
+
+行动
+追求
+成就
+公平
+专注
+责任
+学习
+排难
+适应
+竞争
+回顾
+分析
+收集
+包容
